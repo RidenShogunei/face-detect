@@ -2,7 +2,7 @@ import torch.nn as nn
 import torchvision.models as models
 
 class ResNetFaceModel(nn.Module):
-    def __init__(self, num_classes=2):
+    def __init__(self, num_classes=1):
         super(ResNetFaceModel, self).__init__()
 
         # Load pre-trained ResNet50
