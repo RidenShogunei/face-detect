@@ -5,13 +5,13 @@ import PIL
 from resnet import  ResNetFaceModel
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 img_size = 100
-threshold = 0.1
+threshold = 15
 capture_reference = False
 start_prediction = False
 
 # 加载模型
-model = ResNetFaceModel(num_classes=1)
-model.load_state_dict(torch.load('model_41.pt'))
+model = ResNetFaceModel()
+model.load_state_dict(torch.load('model_261.pt'))
 model = model.to(device)
 model.eval()
 

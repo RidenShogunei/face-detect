@@ -34,21 +34,20 @@ class LFWDataset(Dataset):
 
     def __getitem__(self, idx):
         person1, person2 = np.random.choice(list(self.person_to_images_map.keys()), 2, replace=False)
-        image1 = np.random.choice(self.person_to_images_map[person1])
+        image1_path = np.random.choice(self.person_to_images_map[person1])
 
-        label = None
         if idx % 2 == 0:  # same person
-            image2 = np.random.choice(self.person_to_images_map[person1])
-            label = 1.0
+            image2_path = np.random.choice(self.person_to_images_map[person1])
         else:  # different person
-            image2 = np.random.choice(self.person_to_images_map[person2])
-            label = 0.0
+            image2_path = np.random.choice(self.person_to_images_map[person2])
 
-        image1 = Image.open(image1)
-        image2 = Image.open(image2)
+        image1 = Image.open(image1_path)
+        image2 = Image.open(image2_path)
 
         if self.transform:
             image1 = self.transform(image1)
             image2 = self.transform(image2)
 
-        return image1, image2, torch.from_numpy(np.array([label], dtype=np.float32))
+        # flatten the tensors and calculate the euclidean distance
+        euclidean_distance = torch.dist(image1.view(-1), image2.view(-1), p=2)
+        return image1, image2, euclidean_distance
